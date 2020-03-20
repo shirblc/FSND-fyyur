@@ -150,9 +150,9 @@ def show_venue(venue_id):
   venue_data = db.session.query(Venue).get(venue_id)
   venue_data.genres = str(venue_data.genres).split(',')
   past_shows = db.session.query(Show.venue_id, Show.start_time, Show.artist_id,
-  Artist.name, Artist.image_link).join(Artist).filter(Show.venue_id == venue_id).filter(Show.start_time < current_datetime).all()
+  Artist.name.label('artist_name'), Artist.image_link.label('artist_image_link')).join(Artist).filter(Show.venue_id == venue_id).filter(Show.start_time < current_datetime).all()
   future_shows = db.session.query(Show.venue_id, Show.start_time, Show.artist_id,
-  Artist.name, Artist.image_link).join(Artist).filter(Show.venue_id == venue_id).filter(Show.start_time > current_datetime).all()
+  Artist.name.label('artist_name'), Artist.image_link.label('artist_image_link')).join(Artist).filter(Show.venue_id == venue_id).filter(Show.start_time > current_datetime).all()
   past_shows_count = db.session.query(Show.venue_id, Show.start_time).filter(Show.venue_id == venue_id).filter(Show.start_time < current_datetime).count()
   future_shows_count = db.session.query(Show.venue_id, Show.start_time).filter(Show.venue_id == venue_id).filter(Show.start_time > current_datetime).count()
 
@@ -253,10 +253,10 @@ def show_artist(artist_id):
   # Gets the artist data to display on the page
   artist_data = db.session.query(Artist).get(artist_id)
   artist_data.genres = str(artist_data.genres).split(',')
-  past_shows = db.session.query(Show.venue_id, Show.start_time, Venue.name,
-  Venue.image_link).select_from(Show).join(Venue).filter(Show.artist_id == artist_id).filter(Show.start_time < current_datetime).all()
-  future_shows = db.session.query(Show.venue_id, Show.start_time, Venue.name,
-  Venue.image_link).select_from(Show).join(Venue).filter(Show.artist_id == artist_id).filter(Show.start_time > current_datetime).all()
+  past_shows = db.session.query(Show.venue_id, Show.start_time, Venue.name.label('venue_name'),
+  Venue.image_link.label('venue_image_link')).select_from(Show).join(Venue).filter(Show.artist_id == artist_id).filter(Show.start_time < current_datetime).all()
+  future_shows = db.session.query(Show.venue_id, Show.start_time, Venue.name.label('venue_name'),
+  Venue.image_link.label('venue_image_link')).select_from(Show).join(Venue).filter(Show.artist_id == artist_id).filter(Show.start_time > current_datetime).all()
   num_past_shows = db.session.query(Show.artist_id, Show.start_time).filter(Show.artist_id == artist_id).filter(Show.start_time < current_datetime).count()
   num_future_shows = db.session.query(Show.artist_id, Show.start_time).filter(Show.artist_id == artist_id).filter(Show.start_time > current_datetime).count()
 
