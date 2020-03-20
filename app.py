@@ -177,6 +177,10 @@ def create_venue_submission():
   venue_phone = request.form.get('phone')
   venue_genres = request.form.get('genres')
   venue_fb_link = request.form.get('facebook_link')
+  venue_website = request.form.get('website')
+  venue_image = request.form.get('image_link')
+  seeking_talent = request.form.get('seeking_talent')
+  seeking_description = request.form.get('seeking_description')
 
   data = {}
   error = False
@@ -186,7 +190,8 @@ def create_venue_submission():
       #New venue object
       venue = Venue(name=venue_name, city=venue_city, state=venue_state,
       address=venue_address, phone=venue_phone, genres=venue_genres,
-      facebook_link=venue_fb_link)
+      facebook_link=venue_fb_link, website=venue_website, image_link=venue_image,
+      seeking_talent=seeking_talent, seeking_description=seeking_description)
       db.session.add(venue)
       db.session.commit()
       data['name'] = venue.name
@@ -329,6 +334,10 @@ def create_artist_submission():
   artist_phone = request.form.get('phone')
   artist_genres = request.form.get('genres')
   artist_fb_link = request.form.get('facebook_link')
+  artist_image = request.form.get('image_link')
+  artist_website = request.form.get('website')
+  seeking_venue = request.form.get('seeking_venue')
+  seeking_description = request.form.get('seeking_description')
 
   data = {}
   error = False
@@ -336,7 +345,9 @@ def create_artist_submission():
   #Try to add the data to the database
   try:
       artist = Artist(name=artist_name, city=artist_city, state=artist_state,
-      phone=artist_phone, genres=artist_genres, facebook_link=artist_fb_link)
+      phone=artist_phone, genres=artist_genres, facebook_link=artist_fb_link,
+      image_link=artist_image, website=artist_website, seeking_venue=seeking_venue,
+      seeking_description=seeking_description)
       db.session.add(artist)
       db.session.commit()
       data['name'] = artist.name
