@@ -13,6 +13,7 @@ from logging import Formatter, FileHandler
 from flask_wtf import Form
 from forms import *
 from flask_migrate import Migrate
+from datetime import datetime
 #----------------------------------------------------------------------------#
 # App Config.
 #----------------------------------------------------------------------------#
@@ -547,13 +548,34 @@ def create_shows():
 @app.route('/shows/create', methods=['POST'])
 def create_show_submission():
   # called to create new shows in the db, upon submitting new show listing form
-  # TODO: insert form data as a new Show record in the db, instead
+  show_venue = request.form.get('venue_id')
+  show_artist = request.form.get('artist_id')
+  show_time = datetime.strptime(request.form.get('start_time'), '%Y-%m-%d %H:%M:%S')
 
-  # on successful db insert, flash success
-  flash('Show was successfully listed!')
-  # TODO: on unsuccessful db insert, flash an error instead.
-  # e.g., flash('An error occurred. Show could not be listed.')
-  # see: http://flask.pocoo.org/docs/1.0/patterns/flashing/
+  error = False
+
+  #Try to add the data to the database
+  try:
+      show = Show(venue_id=show_venue, artist_id=show_artist,
+      start_time=show_time)
+      db.session.add(show)
+      db.session.commit()
+  #If there's an error, rollback the session
+  except Exception as e:
+      db.session.rollback()
+      error = True
+      print(e)
+  #Close the connection either way
+  finally:
+      db.session.close()
+  #If an error occurred, flash an error message
+  if error:
+      flash('An error occurred and the show was not listed. Please try again.')
+  #If there was no error, alert the user the venue was listed
+  if not error:
+      # on successful db insert, flash success
+      flash('Show was successfully listed!')
+
   return render_template('pages/home.html')
 
 @app.errorhandler(404)
