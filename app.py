@@ -175,11 +175,11 @@ def create_venue_submission():
   venue_state = request.form.get('state')
   venue_address = request.form.get('address')
   venue_phone = request.form.get('phone')
-  venue_genres = request.form.getlist('genres')
+  venue_genres = ','.join(request.form.getlist('genres'))
   venue_fb_link = request.form.get('facebook_link')
   venue_website = request.form.get('website')
   venue_image = request.form.get('image_link')
-  seeking_talent = request.form.get('seeking_talent')
+  seeking_talent = True if request.form.get('seeking_talent') == 'y' else False
   seeking_description = request.form.get('seeking_description')
 
   data = {}
@@ -332,11 +332,11 @@ def create_artist_submission():
   artist_city = request.form.get('city')
   artist_state = request.form.get('state')
   artist_phone = request.form.get('phone')
-  artist_genres = request.form.getlist('genres')
+  artist_genres = ','.join(request.form.getlist('genres'))
   artist_fb_link = request.form.get('facebook_link')
   artist_image = request.form.get('image_link')
   artist_website = request.form.get('website')
-  seeking_venue = request.form.get('seeking_venue')
+  seeking_venue = True if request.form.get('seeking_venue') == 'y' else False
   seeking_description = request.form.get('seeking_description')
 
   data = {}
