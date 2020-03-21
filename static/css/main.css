@@ -209,3 +209,11 @@ h2.monospace {
 .subtitle {
   opacity: 0.5;
 }
+
+/* Venue delete button */
+#deleteBtn {
+	border: none;
+	background-color: transparent;
+	cursor: pointer;
+	color: #ff8c3a;
+}
