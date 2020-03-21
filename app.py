@@ -429,6 +429,18 @@ def shows():
   Artist.name, Artist.image_link , Venue.name).join(Artist).join(Venue).all()
   return render_template('pages/shows.html', shows=data)
 
+@app.route('/shows/search', methods=['POST'])
+def search_shows():
+  # Gets the search term from the text field and searches the database
+  search_term = request.form.get('search_term', '')
+  search_results = db.session.query(Show.artist_id, Show.venue_id, Show.start_time,
+  Artist.name, Artist.image_link, Venue.name).join(Artist).join(Venue).filter(Artist.name.ilike('%' + search_term + '%') | Venue.name.ilike('%' + search_term + '%')).all()
+  num_search_results = db.session.query(Show.artist_id, Show.venue_id, Show.start_time,
+  Artist.name, Artist.image_link, Venue.name).join(Artist).join(Venue).filter(Artist.name.ilike('%' + search_term + '%') | Venue.name.ilike('%' + search_term + '%')).count()
+  print(search_results)
+
+  return render_template('pages/search_shows.html', shows=search_results, search_term=search_term, num_search_results=num_search_results)
+
 @app.route('/shows/create')
 def create_shows():
   # renders form. do not touch.
