@@ -25,8 +25,6 @@ db = SQLAlchemy(app)
 
 migrate = Migrate(app, db)
 
-# TODO: connect to a local postgresql database
-
 #----------------------------------------------------------------------------#
 # Models.
 #----------------------------------------------------------------------------#
@@ -205,17 +203,12 @@ def create_venue_submission():
   if not error:
       # on successful db insert, flash success
       flash('Venue ' + data['name'] + ' was successfully listed!')
-  # TODO: modify data to be the data object returned from db insertion
 
   return render_template('pages/home.html')
 
 @app.route('/venues/<venue_id>', methods=['DELETE'])
 def delete_venue(venue_id):
-  # TODO: Complete this endpoint for taking a venue_id, and using
-  # SQLAlchemy ORM to delete a record. Handle cases where the session commit could fail.
-
-  # BONUS CHALLENGE: Implement a button to delete a Venue on a Venue Page, have it so that
-  # clicking that button delete it from the db then redirect the user to the homepage
+  
   return None
 
 #  Artists
@@ -399,7 +392,6 @@ def create_artist_submission():
       # on successful db insert, flash success
       flash('Artist ' + data['name'] + ' was successfully listed!')
 
-  # TODO: modify data to be the data object returned from db insertion
   return render_template('pages/home.html')
 
 
