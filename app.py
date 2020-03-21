@@ -276,7 +276,10 @@ def show_artist(artist_id):
 def edit_artist(artist_id):
   # Gets the artist details and creates a pre-filled forms
   artist = db.session.query(Artist).get(artist_id)
+  genres = str(db.session.query(Artist.genres).filter(Artist.id == artist_id).all()).replace("[(", "").replace(")]", "").replace("'", "")
+  genres = genres.split(',')
   form = ArtistForm(obj=artist)
+  form.genres.data = genres
 
   return render_template('forms/edit_artist.html', form=form, artist=artist)
 
@@ -323,7 +326,10 @@ def edit_artist_submission(artist_id):
 def edit_venue(venue_id):
   # Gets the venue details and creates a pre-filled form with the details
   venue = db.session.query(Venue).get(venue_id)
+  genres = str(db.session.query(Venue.genres).filter(Venue.id == venue_id).all()).replace("[(", "").replace(")]", "").replace("'", "")
+  genres = genres.split(',')
   form = VenueForm(obj=venue)
+  form.genres.data = genres
 
   return render_template('forms/edit_venue.html', form=form, venue=venue)
 
